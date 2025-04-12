@@ -40,7 +40,7 @@ struct ContentView: View {
             if viewModel.isLoading {
                 ProgressView("날씨 정보 가져오는중")
             } else {
-                if let weatherData = viewModel.weather {
+                if let weatherData = viewModel.weather, viewModel.error == nil {
                     VStack() {
                         Image(systemName: weatherData.symbolName)
                             .resizable()
@@ -86,6 +86,8 @@ struct ContentView: View {
                     latitude = ""
                     longitude = ""
                     location = nil
+                    viewModel.error = nil
+                    isFocused = false
                 }, label: {
                     Image(systemName: "arrow.clockwise.circle")
                         .resizable()
