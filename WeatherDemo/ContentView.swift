@@ -10,6 +10,7 @@ import CoreLocation
 
 struct ContentView: View {
     @StateObject private var viewModel = WeatherViewModel()
+    @StateObject private var currentLocationManager =  CurrentLocationManager()
     @State private var location: CLLocation?
     @State private var latitude: String = ""
     @State private var longitude: String = ""
@@ -28,21 +29,44 @@ struct ContentView: View {
             .padding()
             Text("날씨 정보")
                 .font(.title)
+                .bold()
             
             if viewModel.isLoading {
                 ProgressView("날씨 정보 가져오는중")
             } else {
                 if let weatherData = viewModel.weather {
-                    Text("온도: \(weatherData.temperature, specifier: "%.1f") °C")
-                    Text("설명: \(weatherData.description)")
-                    Text("습도: \(weatherData.humidity * 100, specifier: "%.1f") %")
-                    Text("풍속: \(weatherData.windSpeed, specifier: "%.1f") m/s")
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack {
+                            Text("온도:")
+                                .frame(alignment: .leading)
+                            Text("\(weatherData.temperature, specifier: "%.1f") °C")
+                        }
+                        HStack {
+                            Text("설명:")
+                                .frame(alignment: .leading)
+                            Text(weatherData.description)
+                        }
+                        HStack {
+                            Text("습도:")
+                                .frame(alignment: .leading)
+                            Text("\(weatherData.humidity * 100, specifier: "%.1f") %")
+                        }
+                        HStack {
+                            Text("풍속:")
+                                .frame(alignment: .leading)
+                            Text("\(weatherData.windSpeed, specifier: "%.1f") m/s")
+                        }
+                    }
                 }
-                
             }
             
             HStack {
                 Button(action: {
+                    Task {
+                        if let location = currentLocationManager.location {
+                            await viewModel.fetchWeather(for: location)
+                        }
+                    }
                 }, label: {
                     Image(systemName: "location.circle")
                         .resizable()
