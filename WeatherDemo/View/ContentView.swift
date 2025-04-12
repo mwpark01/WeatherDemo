@@ -47,7 +47,8 @@ struct ContentView: View {
                             .frame(width: 100, height: 100)
                             .scaledToFit()
                             // 낮인 경우 파란색, 밤인 경우 검은색으로 SFSymbol을 나타냄.
-                            .foregroundStyle(weatherData.isDayLight ? .blue : .black)
+                            // 다크모드일 때 가시성을 위해 이중 삼항연산자 사용...
+                            .foregroundStyle(weatherData.isDayLight ? .blue : (isDarkMode ? .white : .black))
                             Text("\(weatherData.temperature, specifier: "%.1f") °C")
                                 .font(.system(size: 50))
             
