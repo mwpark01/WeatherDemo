@@ -25,7 +25,8 @@ class WeatherService {
                 humidity: current.humidity,
                 // 단위를 m/s로 바꿔준다.
                 windSpeed: current.wind.speed.converted(to: .metersPerSecond).value,
-                symbolName: current.symbolName
+                symbolName: current.symbolName,
+                isDayLight: current.isDaylight
             )
         } catch {
             print("날씨 가져오기 실패: \(error)")

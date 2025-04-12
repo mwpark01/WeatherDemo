@@ -18,12 +18,15 @@ struct WeatherData: Codable {
     var windSpeed: Double
     // SFSymbol
     var symbolName: String
+    // 낮인지 밤인지
+    var isDayLight: Bool
     
-    init(temperature: Double, description: String, humidity: Double, windSpeed: Double, symbolName: String) {
+    init(temperature: Double, description: String, humidity: Double, windSpeed: Double, symbolName: String, isDayLight: Bool) {
         self.temperature = temperature
         self.description = description
         self.humidity = humidity
         self.windSpeed = windSpeed
         self.symbolName = symbolName
+        self.isDayLight = isDayLight
     }
 }
