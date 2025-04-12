@@ -20,10 +20,12 @@ class WeatherService {
             let current = weather.currentWeather
             
             return WeatherData(
-                temperature: current.temperature.value,
+                temperature: current.temperature.converted(to: .celsius).value,
                 description: current.condition.description,
                 humidity: current.humidity,
-                windSpeed: current.wind.speed.value
+                // 단위를 m/s로 바꿔준다.
+                windSpeed: current.wind.speed.converted(to: .metersPerSecond).value,
+                symbolName: current.symbolName
             )
         } catch {
             print("날씨 가져오기 실패: \(error)")

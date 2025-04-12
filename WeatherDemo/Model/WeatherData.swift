@@ -16,11 +16,14 @@ struct WeatherData: Codable {
     var humidity: Double
     // 풍속
     var windSpeed: Double
+    // SFSymbol
+    var symbolName: String
     
-    init(temperature: Double, description: String, humidity: Double, windSpeed: Double) {
+    init(temperature: Double, description: String, humidity: Double, windSpeed: Double, symbolName: String) {
         self.temperature = temperature
         self.description = description
         self.humidity = humidity
         self.windSpeed = windSpeed
+        self.symbolName = symbolName
     }
 }

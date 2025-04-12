@@ -13,7 +13,7 @@ struct ContentView: View {
     // 현재 위치 값을 가져오는 변수
     @StateObject private var currentLocationManager =  CurrentLocationManager()
     // 테스트 용 데이터
-    @State private var garaWeatherData = WeatherData(temperature: 21.0, description: "Hail", humidity: 0.23, windSpeed: 3.4)
+    @State private var garaWeatherData = WeatherData(temperature: 21.0, description: "Hail", humidity: 0.23, windSpeed: 3.4, symbolName: "questionmark")
     // 입력한 위도 경도 값 혹은 현재 위치의 값을 저장하는 변수
     @State private var location: CLLocation?
     // 위도
@@ -42,7 +42,7 @@ struct ContentView: View {
             } else {
                 if let weatherData = viewModel.weather {
                     VStack() {
-                        Image(systemName: weatherConditionImage[weatherData.description] ?? "questionmark")
+                        Image(systemName: weatherData.symbolName)
                             .resizable()
                             .frame(width: 100, height: 100)
                             .scaledToFit()
