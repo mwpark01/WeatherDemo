@@ -14,8 +14,11 @@ struct ContentView: View {
     @StateObject private var currentLocationManager =  CurrentLocationManager()
     // 테스트 용 데이터
     @State private var garaWeatherData = WeatherData(temperature: 21.0, description: "Hail", humidity: 0.23, windSpeed: 3.4)
+    // 입력한 위도 경도 값 혹은 현재 위치의 값을 저장하는 변수
     @State private var location: CLLocation?
+    // 위도
     @State private var latitude: String = ""
+    // 경도
     @State private var longitude: String = ""
     // 다크모드 관련 변수
     @State private var isDarkMode: Bool = false
@@ -61,6 +64,7 @@ struct ContentView: View {
             }
             
             HStack {
+                // 현재 위치 가져오는 버튼
                 Button(action: {
                     Task {
                         if let location = currentLocationManager.location {
@@ -73,6 +77,7 @@ struct ContentView: View {
                         .frame(width: 30, height: 30)
                 })
                 
+                // 초기화 버튼
                 Button(action: {
                     viewModel.weather = nil
                     latitude = ""
@@ -95,7 +100,7 @@ struct ContentView: View {
                 Button(action: {
                     viewModel.error = nil
                     isFocused = false
-                    
+                    // 입력한 값이 Double값이 아닐 수도 있으므로
                     if let lat = Double(latitude), let lon = Double(longitude) {
                         location = CLLocation(latitude: lat, longitude: lon)
                         Task {
@@ -113,6 +118,7 @@ struct ContentView: View {
             .padding()
             
             Text("예) 서울 시청 | 위도: 37.5665, 경도: 126.9780")
+            // 에러가 발생하였다면 에러문 출력
             if let error = viewModel.error {
                 Text(error.localizedDescription)
                     .foregroundStyle(.red)

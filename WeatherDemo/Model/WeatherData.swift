@@ -8,9 +8,13 @@
 import Foundation
 
 struct WeatherData: Codable {
+    // 온도
     var temperature: Double
+    // 날씨 정보
     var description: String
+    // 습도
     var humidity: Double
+    // 풍속
     var windSpeed: Double
     
     init(temperature: Double, description: String, humidity: Double, windSpeed: Double) {
