@@ -18,12 +18,12 @@ struct ContentView: View {
     var body: some View {
         VStack {
             HStack {
-                Spacer() // 오른쪽 정렬용
+                Spacer()
                 Text("다크모드")
                     .font(.title2)
                 
                 Toggle("", isOn: $isDarkMode)
-                    .labelsHidden() // 라벨 숨기기
+                    .labelsHidden()
             }
             .padding()
             Text("날씨 정보")
@@ -41,13 +41,25 @@ struct ContentView: View {
                 
             }
             
-            Button(action: {
-            }, label: {
-                Image(systemName: "location.circle")
-                    .resizable()
-                    .frame(width: 30, height: 30)
-            })
-            
+            HStack {
+                Button(action: {
+                }, label: {
+                    Image(systemName: "location.circle")
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                })
+                
+                Button(action: {
+                    viewModel.weather = nil
+                    latitude = ""
+                    longitude = ""
+                    location = nil
+                }, label: {
+                    Image(systemName: "arrow.clockwise.circle")
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                })
+            }
             HStack {
                 TextField("위도 입력", text: $latitude)
                     .keyboardType(.decimalPad)
