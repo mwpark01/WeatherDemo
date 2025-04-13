@@ -36,7 +36,7 @@ struct ContentView: View {
                     .labelsHidden()
             }
             .padding()
-
+            
             if viewModel.isLoading {
                 ProgressView("날씨 정보 가져오는중")
             } else {
@@ -46,15 +46,15 @@ struct ContentView: View {
                             .resizable()
                             .frame(width: 100, height: 100)
                             .scaledToFit()
-                            // 낮인 경우 파란색, 밤인 경우 검은색으로 SFSymbol을 나타냄.
-                            // 다크모드일 때 가시성을 위해 이중 삼항연산자 사용...
+                        // 낮인 경우 파란색, 밤인 경우 검은색으로 SFSymbol을 나타냄.
+                        // 다크모드일 때 가시성을 위해 이중 삼항연산자 사용...
                             .foregroundStyle(weatherData.isDayLight ? .blue : (isDarkMode ? .white : .black))
-                            Text("\(weatherData.temperature, specifier: "%.1f") °C")
-                                .font(.system(size: 50))
-            
-                            Text(weatherData.description)
-                                .font(.system(size: 30))
-                            
+                        Text("\(weatherData.temperature, specifier: "%.1f") °C")
+                            .font(.system(size: 50))
+                        
+                        Text(weatherData.description)
+                            .font(.system(size: 30))
+                        
                         HStack {
                             Image(systemName: "humidity")
                             Text("\(weatherData.humidity * 100, specifier: "%.1f") %")
@@ -70,8 +70,9 @@ struct ContentView: View {
                 // 현재 위치 가져오는 버튼
                 Button(action: {
                     Task {
-                        if let location = currentLocationManager.location {
-                            await viewModel.fetchWeather(for: location)
+                        if let currentLocation = currentLocationManager.location {
+                            location = currentLocation
+                            await viewModel.fetchWeather(for: currentLocation)
                         }
                     }
                 }, label: {
@@ -79,6 +80,19 @@ struct ContentView: View {
                         .resizable()
                         .frame(width: 30, height: 30)
                 })
+                // 새로고침 버튼
+                Button(action: {
+                    Task {
+                        if let location {
+                            await viewModel.fetchWeather(for: location)
+                        }
+                    }
+                }, label: {
+                    Image(systemName: "arrow.clockwise.circle")
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                })
+                .disabled(location == nil)
                 
                 // 초기화 버튼
                 Button(action: {
@@ -89,9 +103,10 @@ struct ContentView: View {
                     viewModel.error = nil
                     isFocused = false
                 }, label: {
-                    Image(systemName: "arrow.clockwise.circle")
+                    Image(systemName: "xmark.circle")
                         .resizable()
                         .frame(width: 30, height: 30)
+                        .foregroundStyle(.red)
                 })
             }
             HStack {
