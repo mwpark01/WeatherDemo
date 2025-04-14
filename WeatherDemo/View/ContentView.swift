@@ -82,11 +82,16 @@ struct ContentView: View {
                 })
                 // 새로고침 버튼
                 Button(action: {
-                    Task {
-                        if let location {
-                            await viewModel.fetchWeather(for: location)
+                    if viewModel.isLoading {
+                        ProgressView("날씨 정보 가져오는중")
+                    } else {
+                        Task {
+                            if let location {
+                                await viewModel.fetchWeather(for: location)
+                            }
                         }
                     }
+                    
                 }, label: {
                     Image(systemName: "arrow.clockwise.circle")
                         .resizable()
